@@ -87,13 +87,17 @@ void blueProtecAuton() {
 }
 
 void blueUnProtecAuton() {
-  encoderDrive(1, 80, false);
+  encoderDrive(0.8, 80, false);
   wait(500, msec);
   deploy();
-  
-  spinIntakes(true, 80);
-  encoderDrive(4, 50, true);
+  wait(500, msec);
+
+  spinIntakes(true, 100);
+  encoderDrive(4, 40, true);
   brakeIntakes();
 
-  encoderDrive(3, 80, true);
+  encoderDrive(-3, 80, true);
+  leftDrive(-1, 80, false);
+  rightDrive(1, 80, true);
+  
 }

@@ -29,8 +29,8 @@ using namespace vex;
 // Pre-Auton
 void pre_auton( void ) {
   ArmMotor.setBrake(vex::brakeType::hold);
-  RightIntakeMotor.setBrake(vex::brakeType::brake);
-  LeftIntakeMotor.setBrake(vex::brakeType::brake);
+  RightIntakeMotor.setBrake(vex::brakeType::hold);
+  LeftIntakeMotor.setBrake(vex::brakeType::hold);
   TrayMotor.setBrake(vex::brakeType::brake);
 }
 
