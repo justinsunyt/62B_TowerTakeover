@@ -1,5 +1,6 @@
 #include "vex.h"
 #include "config.h"
+#include "usercontrol.h"
 
 using namespace vex;
 
@@ -70,11 +71,11 @@ void deploy() {
   brakeIntakes();
   
   TrayMotor.startSpinFor(directionType::rev, 1, rotationUnits::rev, 100, velocityUnits::pct);
-  ArmMotor.spinFor(directionType::fwd, 1.1, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
+  ArmMotor.spinFor(directionType::fwd, 1.3, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
 }
 
 void onePointAuton() {
-  encoderDrive(3, 80, true);
+  encoderDrive(2, 80, true);
   encoderDrive(-3, 80, true);
   brakeDrive();
 }
@@ -87,17 +88,91 @@ void blueProtecAuton() {
 }
 
 void blueUnProtecAuton() {
-  encoderDrive(0.8, 80, false);
-  wait(500, msec);
+  encoderDrive(1, 80, false);
+  wait(100, msec);
   deploy();
   wait(500, msec);
+  encoderDrive(-0.5, 60, true);
 
   spinIntakes(true, 100);
-  encoderDrive(4, 40, true);
+  encoderDrive(1, 45, true);
+  brakeDrive();
+  wait(50, msec);
+  encoderDrive(1, 45, true);
+  brakeDrive();
+  wait(50, msec);
+  encoderDrive(1, 45, true);
+  brakeDrive();
+  wait(50, msec);
+  encoderDrive(1, 45, true);
+  brakeDrive();
+  wait(50, msec);
+  encoderDrive(1.5, 45, true);
+  brakeDrive();
+  wait(400, msec);
   brakeIntakes();
 
-  encoderDrive(-3, 80, true);
-  leftDrive(-1, 80, false);
-  rightDrive(1, 80, true);
+  encoderDrive(-3.5, 80, true);
+  wait(100, msec);
+  leftDrive(-1.6, 40, false);
+  rightDrive(1.6, 40, true);
+  wait(200, msec);
+
+  encoderDrive(1.5, 60, true);
+  spinIntakes(false, 40);
+  wait(350, msec);
+  brakeIntakes();
+  wait(100, msec);
+  stack();
+  wait(100, msec);
+  TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
+  wait(300, msec);
+  encoderDrive(-1, 60, true);
+  TrayMotor.stop();
+  
+}
+
+void redUnProtecAuton() {
+  encoderDrive(1, 80, false);
+  wait(100, msec);
+  deploy();
+  wait(500, msec);
+  encoderDrive(-0.5, 60, true);
+
+  spinIntakes(true, 100);
+  encoderDrive(1, 45, true);
+  brakeDrive();
+  wait(50, msec);
+  encoderDrive(1, 45, true);
+  brakeDrive();
+  wait(50, msec);
+  encoderDrive(1, 45, true);
+  brakeDrive();
+  wait(50, msec);
+  encoderDrive(1, 45, true);
+  brakeDrive();
+  wait(50, msec);
+  encoderDrive(1.5, 45, true);
+  brakeDrive();
+  wait(400, msec);
+  brakeIntakes();
+
+  encoderDrive(-3.5, 80, true);
+  wait(100, msec);
+  leftDrive(1.6, 40, false);
+  rightDrive(-1.6, 40, true);
+  wait(200, msec);
+
+  encoderDrive(1.5, 60, true);
+  spinIntakes(false, 40);
+  wait(350, msec);
+  brakeIntakes();
+  wait(100, msec);
+  stack();
+  wait(100, msec);
+  TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
+  wait(300, msec);
+  encoderDrive(-1, 60, true);
+  TrayMotor.stop();
   
 }

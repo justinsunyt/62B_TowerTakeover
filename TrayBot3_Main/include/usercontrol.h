@@ -1,3 +1,4 @@
+#pragma once
 #include "vex.h"
 #include "config.h"
 
@@ -12,13 +13,13 @@ int isFunc = 0;
 
 void towerLow() {
   isFunc = 1;
-  TrayMotor.startSpinFor(vex::directionType::fwd, 3.5, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
+  TrayMotor.startSpinFor(vex::directionType::fwd, 3.7, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
   wait(400, timeUnits::msec); 
   ArmMotor.spinFor(vex::directionType::rev, 2.7, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
   isFunc = 0;
 }
 
-void towerHigh() {
+void towerHigh() { 
   isFunc = 1;
   TrayMotor.startSpinFor(vex::directionType::fwd, 3.7, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
   wait(400, timeUnits::msec);
@@ -30,7 +31,7 @@ void stack() {
   isFunc = 1;
   RightIntakeMotor.spin(vex::directionType::rev, intakeSpeedPCT/40, vex::velocityUnits::pct);
   LeftIntakeMotor.spin(vex::directionType::rev, intakeSpeedPCT/40, vex::velocityUnits::pct);
-  TrayMotor.spinFor(vex::directionType::fwd, 10, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
+  TrayMotor.spinFor(vex::directionType::fwd, 10.3, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
   RightIntakeMotor.stop(brakeType::brake);
   LeftIntakeMotor.stop(brakeType::brake);
   isFunc = 0;
