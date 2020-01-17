@@ -44,7 +44,7 @@ void autonomous( void ) {
 int main() {
     pre_auton();
 
-    Competition.autonomous( redUnProtecAuton );
+    Competition.autonomous( blueUnProtecAuton );
     Competition.drivercontrol( usercontrol );
                      
     while(1) {
