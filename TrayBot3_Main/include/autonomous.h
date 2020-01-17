@@ -85,6 +85,43 @@ void blueProtecAuton() {
   wait(100, msec);
   deploy();
   wait(500, msec);
+
+  spinIntakes(true, 100);
+  encoderDrive(1, 45, true);
+  brakeDrive();
+  wait(50, msec);
+
+  encoderDrive(1.3, 45, true);
+  brakeDrive();
+  wait(100, msec);
+
+  rightDrive(1.3, 40, false);
+  leftDrive(-1.3, 40, true);
+  wait(200, msec);
+
+  encoderDrive(0.7, 45, true);
+  wait(100, msec);
+
+  leftDrive(-0.2, 40, true);
+  encoderDrive(-3.2, 80, true);
+  wait(100, msec);
+
+  rightDrive(1.2, 40, false);
+  leftDrive(-1.2, 40, true);
+  wait(200, msec);
+
+  encoderDrive(2.8, 60, true);
+  brakeIntakes();
+  spinIntakes(false, 40);
+  wait(600, msec);
+  brakeIntakes();
+  wait(100, msec);
+  stack();
+  wait(100, msec);
+  TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
+  wait(300, msec);
+  encoderDrive(-1, 60, true);
+  TrayMotor.stop();
 }
 
 void redProtecAuton() {
@@ -98,27 +135,29 @@ void redProtecAuton() {
   brakeDrive();
   wait(50, msec);
 
-  encoderDrive(1, 45, true);
+  encoderDrive(1.3, 45, true);
   brakeDrive();
   wait(100, msec);
 
-  rightDrive(1.3, 40, false);
-  leftDrive(-1.3, 40, true);
+  rightDrive(-1.3, 40, false);
+  leftDrive(1.3, 40, true);
   wait(200, msec);
 
   encoderDrive(0.7, 45, true);
   wait(100, msec);
 
   rightDrive(-0.2, 40, true);
-  encoderDrive(-4, 80, true);
-  rightDrive(-1.1, 40, false);
-  leftDrive(1.1, 40, true);
+  encoderDrive(-3.2, 80, true);
+  wait(100, msec);
+
+  rightDrive(-1.2, 40, false);
+  leftDrive(1.2, 40, true);
   wait(200, msec);
 
-  encoderDrive(2, 60, true);
+  encoderDrive(2.8, 60, true);
   brakeIntakes();
   spinIntakes(false, 40);
-  wait(350, msec);
+  wait(600, msec);
   brakeIntakes();
   wait(100, msec);
   stack();
@@ -127,7 +166,6 @@ void redProtecAuton() {
   wait(300, msec);
   encoderDrive(-1, 60, true);
   TrayMotor.stop();
-
 
 }
 
@@ -207,7 +245,7 @@ void redUnProtecAuton() {
   rightDrive(-1.6, 40, true);
   wait(200, msec);
 
-  encoderDrive(1.5, 60, true);
+  encoderDrive(1.6, 60, true);
   spinIntakes(false, 40);
   wait(350, msec);
   brakeIntakes();
