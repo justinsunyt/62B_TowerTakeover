@@ -28,10 +28,7 @@ using namespace vex;
 
 // Pre-Auton
 void pre_auton( void ) {
-  ArmMotor.setBrake(vex::brakeType::hold);
-  RightIntakeMotor.setBrake(vex::brakeType::hold);
-  LeftIntakeMotor.setBrake(vex::brakeType::hold);
-  TrayMotor.setBrake(vex::brakeType::brake);
+
 }
 
 
@@ -42,13 +39,13 @@ void autonomous( void ) {
 
 
 int main() {
+    Competition.autonomous(  onePointAuton );
+    Competition.drivercontrol( usercontrol );
+    
     pre_auton();
 
-    Competition.autonomous( onePointAuton );
-    Competition.drivercontrol( usercontrol );
-                     
     while(1) {
-      vex::task::sleep(20);
+      vex::task::sleep(100);
     }    
        
 }
