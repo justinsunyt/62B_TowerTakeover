@@ -134,10 +134,9 @@ void pidTurn(float degrees, float kP, float kI, float kD, bool dir) {
       if (error < 1.3 && error > -1.3) {
         done += 0.15;
       }
-    }
-
-    brakeDrive();
+    } 
   }
+  brakeDrive();
 }
 
 
@@ -277,12 +276,12 @@ void skillsAuton() {
   wait(1500, msec);
   brakeIntakes();
 
-  encoderDrive(-3.6, 80, true);
+  encoderDrive(-3.4, 80, true);
   wait(100, msec);
   pidTurn(130, 1.5, 0, 5, true);
   wait(200, msec);
 
-  encoderDrive(1.53, 60, true);
+  encoderDrive(1.56, 60, true);
   spinIntakes(false, 40);
   wait(350, msec);
   brakeIntakes();
@@ -295,4 +294,31 @@ void skillsAuton() {
   encoderDrive(-1, 60, true);
   TrayMotor.stop();
   
+  encoderDrive(-1, 60, true);
+  pidTurn(140, 1.5, 0, 5, true);
+  wait(100, msec);
+
+  encoderDrive(-1.5, 50, true);
+
+  TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
+  wait(2300, msec);
+  TrayMotor.stop();
+
+  spinIntakes(true, 100);
+  encoderDrive(6, 50, true);
+  brakeIntakes();
+
+  encoderDrive(-1, 60, true);
+
+  spinIntakes(false, 40);
+  wait(350, msec);
+  brakeIntakes();
+
+  towerHigh();
+  
+  encoderDrive(1.2, 50, true);
+  spinIntakes(false, 60);
+  wait(1000, msec);
+  brakeIntakes();
+
 }
