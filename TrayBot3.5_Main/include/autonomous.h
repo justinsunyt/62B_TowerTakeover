@@ -271,12 +271,12 @@ void skillsAuton() {
   wait(100, msec);
 
   spinIntakes(true, 100);
-  encoderDrive(5.5, 36, true);
+  encoderDrive(4.6, 36, true);
   brakeDrive();
   wait(1500, msec);
   brakeIntakes();
 
-  encoderDrive(-3.4, 80, true);
+  encoderDrive(-2.3, 80, true);
   wait(100, msec);
   pidTurn(130, 1.5, 0, 5, true);
   wait(200, msec);
@@ -298,10 +298,10 @@ void skillsAuton() {
   pidTurn(140, 1.5, 0, 5, true);
   wait(100, msec);
 
-  encoderDrive(-1.5, 50, true);
+  encoderDrive(-2, 80, true);
 
   TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
-  wait(2300, msec);
+  wait(2200, msec);
   TrayMotor.stop();
 
   spinIntakes(true, 100);
