@@ -239,49 +239,146 @@ void BUPAuton() {
   
 }
 
-//Skills - Start on Red UnProtected (9pt)
+//Red Protected (4pt)
+void RPAuton() {
+  ArmMotor.setBrake(vex::brakeType::hold);
+  RightIntakeMotor.setBrake(vex::brakeType::hold);
+  LeftIntakeMotor.setBrake(vex::brakeType::hold);
+  TrayMotor.setBrake(vex::brakeType::brake);
+  encoderDrive(1, 80, false);
+  wait(100, msec);
+  deploy();
+  wait(1000, msec);
+
+  spinIntakes(true, 100);
+  encoderDrive(2.6, 45, true);
+  brakeDrive();
+  wait(100, msec);
+
+  rightDrive(-1.3, 40, false);
+  leftDrive(1.3, 40, true);
+  wait(200, msec);
+
+  encoderDrive(0.75, 45, true);
+  wait(100, msec);
+
+  rightDrive(-0.32, 40, true);
+  encoderDrive(-2.8, 80, true);
+  wait(100, msec);
+
+  rightDrive(-1.2, 40, false);
+  leftDrive(1.2, 40, true);
+  wait(100, msec);
+
+  encoderDrive(3, 60, true);
+  brakeIntakes();
+  spinIntakes(false, 40);
+  wait(600, msec);
+  brakeIntakes();
+  wait(100, msec);
+  stack();
+  wait(100, msec);
+  TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
+  wait(300, msec);
+  encoderDrive(-1, 60, true);
+  TrayMotor.stop();
+}
+
+//Blue Protected (4pt)
+void BPAuton() {
+  ArmMotor.setBrake(vex::brakeType::hold);
+  RightIntakeMotor.setBrake(vex::brakeType::hold);
+  LeftIntakeMotor.setBrake(vex::brakeType::hold);
+  TrayMotor.setBrake(vex::brakeType::brake);
+  encoderDrive(1, 80, false);
+  wait(100, msec);
+  deploy();
+  wait(1000, msec);
+
+  spinIntakes(true, 100);
+  encoderDrive(2.5, 45, true);
+  brakeDrive();
+  wait(100, msec);
+
+  rightDrive(1.25, 40, false);
+  leftDrive(-1.25, 40, true);
+  wait(200, msec);
+
+  encoderDrive(0.75, 45, true);
+  wait(100, msec);
+
+  leftDrive(-0.32, 40, true);
+  encoderDrive(-2.6, 80, true);
+  wait(100, msec);
+
+  rightDrive(1.2, 40, false);
+  leftDrive(-1.2, 40, true);
+  wait(100, msec);
+
+  encoderDrive(2.95, 60, true);
+  brakeIntakes();
+  spinIntakes(false, 40);
+  wait(600, msec);
+  brakeIntakes();
+  wait(100, msec);
+  stack();
+  wait(100, msec);
+  TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
+  wait(300, msec);
+  encoderDrive(-1, 60, true);
+  TrayMotor.stop();
+}
+
+//Skills - Start on Red UnProtected (24pt)
 void skillsAuton() {
   ArmMotor.setBrake(vex::brakeType::hold);
   RightIntakeMotor.setBrake(vex::brakeType::hold);
   LeftIntakeMotor.setBrake(vex::brakeType::hold);
   TrayMotor.setBrake(vex::brakeType::brake);
 
+  //deploy
   encoderDrive(1.5, 80, false);
   wait(100, msec);
   deploy();
   wait(500, msec);
   encoderDrive(-0.8, 60, true);
 
+  //intake first row of cubes
   spinIntakes(true, 100);
   encoderDrive(4, 36, true);
   brakeDrive();
   wait(1000, msec);
   brakeIntakes();
 
+  //turn to second row of cubes
   encoderDrive(-1.1, 80, true);
   wait(100, msec);
   pidTurn(47, 1.5, 0, 5, false);
   wait(200, msec);
-
   encoderDrive(-3.5, 50, true);
   wait(100, msec);
   pidTurn(47, 1.5, 0, 5, true);
   wait(200, msec);
-  encoderDrive(-0.4, 60, true);
+  encoderDrive(-0.5, 60, true);
   wait(100, msec);
 
+  //intake second row of cubes
   spinIntakes(true, 100);
-  encoderDrive(4.6, 36, true);
+  encoderDrive(4.55, 36, true);
   brakeDrive();
   wait(1500, msec);
   brakeIntakes();
 
-  encoderDrive(-2.3, 80, true);
+  //back up and turn to goalzone
+  encoderDrive(-2.6, 80, true);
   wait(100, msec);
-  pidTurn(130, 1.5, 0, 5, true);
+  encoderDrive(0.25, 80, true);
+  wait(100, msec);
+  pidTurn(130, 1.4, 0, 5, true);
   wait(200, msec);
 
-  encoderDrive(1.56, 60, true);
+  //stack in goalzone
+  encoderDrive(1.7, 60, true);
   spinIntakes(false, 40);
   wait(350, msec);
   brakeIntakes();
@@ -294,31 +391,62 @@ void skillsAuton() {
   encoderDrive(-1, 60, true);
   TrayMotor.stop();
   
+  //back out and turn to face tower
   encoderDrive(-1, 60, true);
   pidTurn(140, 1.5, 0, 5, true);
   wait(100, msec);
 
-  encoderDrive(-2, 80, true);
+  //reset tray
+  encoderDrive(-1.8, 80, false);
+  TrayMotor.startSpinFor(vex::directionType::rev, 8.6, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
+  wait(1200, msec);
 
-  TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
-  wait(2200, msec);
-  TrayMotor.stop();
-
+  //intake cube under tower
   spinIntakes(true, 100);
   encoderDrive(6, 50, true);
   brakeIntakes();
 
+  //back up and slightly outake cube
   encoderDrive(-1, 60, true);
-
   spinIntakes(false, 40);
   wait(350, msec);
   brakeIntakes();
-
-  towerHigh();
   
+  //stack cube in tower
+  towerHigh();
   encoderDrive(1.2, 50, true);
   spinIntakes(false, 60);
   wait(1000, msec);
   brakeIntakes();
+  
+  //back up and reset arms and tray
+  encoderDrive(-1, 50, false);
+  wait(100, msec);
+  ArmMotor.startSpinFor(vex::directionType::fwd, 3.6, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
+  wait(300, msec);
+  TrayMotor.startSpinFor(vex::directionType::rev, 4.2, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
 
+  //back up and turn to face tower
+  encoderDrive(-2.5, 60, true);
+  pidTurn(90, 1.5, 0, 5, true);
+
+  //intake cube under tower
+  spinIntakes(true, 100);
+  encoderDrive(5, 50, true);
+  brakeIntakes();
+
+  //back up and slightly outake cube
+  encoderDrive(-1, 60, true);
+  spinIntakes(false, 40);
+  wait(350, msec);
+  brakeIntakes();
+
+  //stack cube in tower
+  towerLow();
+  spinIntakes(false, 60);
+  wait(1000, msec);
+  brakeIntakes();
+
+  //back up
+  encoderDrive(-1, 50, true);
 }

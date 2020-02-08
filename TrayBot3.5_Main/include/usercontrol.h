@@ -16,7 +16,7 @@ void towerLow() {
   isFunc = 1;
   TrayMotor.startSpinFor(vex::directionType::fwd, 4.2, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
   wait(400, timeUnits::msec); 
-  ArmMotor.spinFor(vex::directionType::rev, 2.8, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
+  ArmMotor.spinFor(vex::directionType::rev, 2.7, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
   isFunc = 0;
 }
 
@@ -32,7 +32,7 @@ void stack() {
   isFunc = 1;
   RightIntakeMotor.spin(vex::directionType::rev, intakeSpeedPCT/40, vex::velocityUnits::pct);
   LeftIntakeMotor.spin(vex::directionType::rev, intakeSpeedPCT/40, vex::velocityUnits::pct);
-  TrayMotor.spinFor(vex::directionType::fwd, 9.6, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
+  TrayMotor.spinFor(vex::directionType::fwd, 9.3, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
   RightIntakeMotor.stop(brakeType::brake);
   LeftIntakeMotor.stop(brakeType::brake);
   isFunc = 0;

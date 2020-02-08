@@ -39,7 +39,7 @@ void autonomous( void ) {
 
 
 int main() {
-    Competition.autonomous( skillsAuton );
+    Competition.autonomous( RPAuton );
     Competition.drivercontrol( usercontrol );
     
     pre_auton();
