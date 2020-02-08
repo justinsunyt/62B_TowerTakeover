@@ -48,34 +48,7 @@ void brakeDrive() {
   RightMotor2.stop(brakeType::brake);
 }
 
-void spinIntakes(bool dir, float pct) {
-  if (dir) {
-    RightIntakeMotor.spin(directionType::fwd, pct, velocityUnits::pct);
-    LeftIntakeMotor.spin(directionType::fwd, pct, velocityUnits::pct);
-  }
-  else {
-    RightIntakeMotor.spin(directionType::rev, pct, velocityUnits::pct);
-    LeftIntakeMotor.spin(directionType::rev, pct, velocityUnits::pct);
-  }
-}
-
-void brakeIntakes() {
-  RightIntakeMotor.stop(brakeType::brake);
-  LeftIntakeMotor.stop(brakeType::brake);
-}
-
-void deploy() {
-  spinIntakes(true, 100);
-  TrayMotor.startSpinFor(directionType::fwd, 1, rotationUnits::rev, 100, velocityUnits::pct);
-  ArmMotor.spinFor(directionType::rev, 1.1, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
-  
-  brakeIntakes();
-  
-  TrayMotor.startSpinFor(directionType::rev, 1, rotationUnits::rev, 100, velocityUnits::pct);
-  ArmMotor.spinFor(directionType::fwd, 1.15, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
-}
-
-void pidTurn(float degrees, float kP, float kI, float kD, bool dir) {
+void pidTurn(float degrees, float kP, float kI, float kD, bool dir, float speedPCT = 100) {
   Inertial.resetRotation();
   float error;
   float integral;
@@ -96,7 +69,7 @@ void pidTurn(float degrees, float kP, float kI, float kD, bool dir) {
       }
       derivative = error - prevError;
       prevError = error;
-      speed = error*kP + integral*kI + derivative*kD;
+      speed = speedPCT/100 * error*kP + integral*kI + derivative*kD;
 
       LeftMotor1.spin(directionType::fwd, speed, velocityUnits::pct);
       LeftMotor2.spin(directionType::fwd, speed, velocityUnits::pct);
@@ -122,7 +95,7 @@ void pidTurn(float degrees, float kP, float kI, float kD, bool dir) {
       }
       derivative = error - prevError;
       prevError = error;
-      speed = error*kP + integral*kI + derivative*kD;
+      speed = speedPCT/100 * error*kP + integral*kI + derivative*kD;
 
       LeftMotor1.spin(directionType::rev, speed, velocityUnits::pct);
       LeftMotor2.spin(directionType::rev, speed, velocityUnits::pct);
@@ -159,7 +132,7 @@ void testAuton() {
     wait(1, msec);
   }
 
-  pidTurn(90, 1.5, 0, 5, true);
+  pidTurn(130, 1.5, 0, 5, true, 80);
   Controller.Screen.print("Done");
 }
 
@@ -341,7 +314,8 @@ void skillsAuton() {
   wait(100, msec);
   deploy();
   wait(500, msec);
-  encoderDrive(-0.8, 60, true);
+  encoderDrive(-1, 80, true);
+  wait(200, msec);
 
   //intake first row of cubes
   spinIntakes(true, 100);
@@ -359,7 +333,7 @@ void skillsAuton() {
   wait(100, msec);
   pidTurn(47, 1.5, 0, 5, true);
   wait(200, msec);
-  encoderDrive(-0.5, 60, true);
+  encoderDrive(-0.8, 60, true);
   wait(100, msec);
 
   //intake second row of cubes
@@ -370,15 +344,13 @@ void skillsAuton() {
   brakeIntakes();
 
   //back up and turn to goalzone
-  encoderDrive(-2.6, 80, true);
-  wait(100, msec);
-  encoderDrive(0.25, 80, true);
-  wait(100, msec);
-  pidTurn(130, 1.4, 0, 5, true);
+  encoderDrive(-2.5, 80, true);
+  wait(500, msec);
+  pidTurn(130, 1.5, 0, 5, true, 80);
   wait(200, msec);
 
   //stack in goalzone
-  encoderDrive(1.7, 60, true);
+  encoderDrive(1.4, 60, true);
   spinIntakes(false, 40);
   wait(350, msec);
   brakeIntakes();
@@ -397,9 +369,9 @@ void skillsAuton() {
   wait(100, msec);
 
   //reset tray
-  encoderDrive(-1.8, 80, false);
+  encoderDrive(-2, 80, false);
   TrayMotor.startSpinFor(vex::directionType::rev, 8.6, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
-  wait(1200, msec);
+  wait(2000, msec);
 
   //intake cube under tower
   spinIntakes(true, 100);
@@ -409,7 +381,7 @@ void skillsAuton() {
   //back up and slightly outake cube
   encoderDrive(-1, 60, true);
   spinIntakes(false, 40);
-  wait(350, msec);
+  wait(500, msec);
   brakeIntakes();
   
   //stack cube in tower
@@ -427,7 +399,7 @@ void skillsAuton() {
   TrayMotor.startSpinFor(vex::directionType::rev, 4.2, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
 
   //back up and turn to face tower
-  encoderDrive(-2.5, 60, true);
+  encoderDrive(-2, 60, true);
   pidTurn(90, 1.5, 0, 5, true);
 
   //intake cube under tower
@@ -438,7 +410,7 @@ void skillsAuton() {
   //back up and slightly outake cube
   encoderDrive(-1, 60, true);
   spinIntakes(false, 40);
-  wait(350, msec);
+  wait(500, msec);
   brakeIntakes();
 
   //stack cube in tower

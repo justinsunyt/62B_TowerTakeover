@@ -14,7 +14,7 @@ int isFunc = 0;
 //Functions
 void towerLow() {
   isFunc = 1;
-  TrayMotor.startSpinFor(vex::directionType::fwd, 4.2, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
+  TrayMotor.startSpinFor(vex::directionType::fwd, 3.5, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
   wait(400, timeUnits::msec); 
   ArmMotor.spinFor(vex::directionType::rev, 2.7, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
   isFunc = 0;
@@ -22,7 +22,7 @@ void towerLow() {
 
 void towerHigh() { 
   isFunc = 1;
-  TrayMotor.startSpinFor(vex::directionType::fwd, 4.2, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
+  TrayMotor.startSpinFor(vex::directionType::fwd, 3.9, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
   wait(400, timeUnits::msec);
   ArmMotor.spinFor(vex::directionType::rev, 3.6, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
   isFunc = 0;
@@ -32,9 +32,38 @@ void stack() {
   isFunc = 1;
   RightIntakeMotor.spin(vex::directionType::rev, intakeSpeedPCT/40, vex::velocityUnits::pct);
   LeftIntakeMotor.spin(vex::directionType::rev, intakeSpeedPCT/40, vex::velocityUnits::pct);
-  TrayMotor.spinFor(vex::directionType::fwd, 9.3, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
+  TrayMotor.spinFor(vex::directionType::fwd, 9.1, vex::rotationUnits::rev, 100, vex::velocityUnits::pct);
   RightIntakeMotor.stop(brakeType::brake);
   LeftIntakeMotor.stop(brakeType::brake);
+  isFunc = 0;
+}
+
+void spinIntakes(bool dir, float pct) {
+  if (dir) {
+    RightIntakeMotor.spin(directionType::fwd, pct, velocityUnits::pct);
+    LeftIntakeMotor.spin(directionType::fwd, pct, velocityUnits::pct);
+  }
+  else {
+    RightIntakeMotor.spin(directionType::rev, pct, velocityUnits::pct);
+    LeftIntakeMotor.spin(directionType::rev, pct, velocityUnits::pct);
+  }
+}
+
+void brakeIntakes() {
+  RightIntakeMotor.stop(brakeType::brake);
+  LeftIntakeMotor.stop(brakeType::brake);
+}
+
+void deploy() {
+  isFunc = 1;
+  spinIntakes(true, 100);
+  TrayMotor.startSpinFor(directionType::fwd, 1, rotationUnits::rev, 100, velocityUnits::pct);
+  ArmMotor.spinFor(directionType::rev, 1.1, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
+  
+  brakeIntakes();
+  
+  TrayMotor.startSpinFor(directionType::rev, 1, rotationUnits::rev, 100, velocityUnits::pct);
+  ArmMotor.spinFor(directionType::fwd, 1.15, vex::rotationUnits::rev, 90, vex::velocityUnits::pct);
   isFunc = 0;
 }
 
@@ -69,6 +98,13 @@ void armTrayIntakeMotors()
     if(Controller.ButtonX.pressing()) {
       if(isFunc == 0){
         stack();
+      }
+    }
+
+    else
+    if(Controller.ButtonY.pressing()) {
+      if(isFunc == 0){
+        deploy();
       }
     }
     
