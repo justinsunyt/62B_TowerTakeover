@@ -150,26 +150,23 @@ void RUPAuton() {
   encoderDrive(-0.8, 60, true);
 
   spinIntakes(true, 100);
-  encoderDrive(4, 36, true);
+  encoderDrive(4.5, 36, true);
   brakeDrive();
   wait(500, msec);
   brakeIntakes();
 
-  encoderDrive(-2.1, 80, true);
+  encoderDrive(-2.6, 90, true);
   wait(100, msec);
   pidTurn(130, 1.5, 0, 5, true);
-  wait(200, msec);
 
   encoderDrive(1.58, 60, true);
   spinIntakes(false, 40);
-  wait(450, msec);
+  wait(350, msec);
   brakeIntakes();
   wait(100, msec);
   stack();
-  wait(100, msec);
-  TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
   wait(300, msec);
-  encoderDrive(-1, 60, true);
+  encoderDrive(-1, 80, true);
   TrayMotor.stop();
   
 }
@@ -188,26 +185,23 @@ void BUPAuton() {
   encoderDrive(-0.8, 60, true);
 
   spinIntakes(true, 100);
-  encoderDrive(4, 36, true);
+  encoderDrive(4.5, 36, true);
   brakeDrive();
   wait(500, msec);
   brakeIntakes();
 
-  encoderDrive(-2.1, 80, true);
+  encoderDrive(-2.6, 80, true);
   wait(100, msec);
   pidTurn(130, 1.5, 0, 5, false);
-  wait(200, msec);
 
-  encoderDrive(1.58, 60, true);
+  encoderDrive(1.5, 60, true);
   spinIntakes(false, 40);
-  wait(450, msec);
+  wait(350, msec);
   brakeIntakes();
   wait(100, msec);
   stack();
-  wait(100, msec);
-  TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
   wait(300, msec);
-  encoderDrive(-1, 60, true);
+  encoderDrive(-1, 80, true);
   TrayMotor.stop();
   
 }
@@ -243,15 +237,13 @@ void RPAuton() {
   leftDrive(1.2, 40, true);
   wait(100, msec);
 
-  encoderDrive(3, 60, true);
+  encoderDrive(3.2, 60, true);
   brakeIntakes();
   spinIntakes(false, 40);
-  wait(600, msec);
+  wait(400, msec);
   brakeIntakes();
   wait(100, msec);
   stack();
-  wait(100, msec);
-  TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
   wait(300, msec);
   encoderDrive(-1, 60, true);
   TrayMotor.stop();
@@ -288,15 +280,13 @@ void BPAuton() {
   leftDrive(-1.2, 40, true);
   wait(100, msec);
 
-  encoderDrive(2.95, 60, true);
+  encoderDrive(3.2, 60, true);
   brakeIntakes();
   spinIntakes(false, 40);
-  wait(600, msec);
+  wait(450, msec);
   brakeIntakes();
   wait(100, msec);
   stack();
-  wait(100, msec);
-  TrayMotor.spin(directionType::rev, 100, velocityUnits::pct);
   wait(300, msec);
   encoderDrive(-1, 60, true);
   TrayMotor.stop();
@@ -308,7 +298,7 @@ void skillsAuton() {
   RightIntakeMotor.setBrake(vex::brakeType::hold);
   LeftIntakeMotor.setBrake(vex::brakeType::hold);
   TrayMotor.setBrake(vex::brakeType::brake);
-
+ 
   //deploy
   encoderDrive(1.5, 80, false);
   wait(100, msec);
@@ -319,7 +309,7 @@ void skillsAuton() {
 
   //intake first row of cubes
   spinIntakes(true, 100);
-  encoderDrive(4, 36, true);
+  encoderDrive(4, 32, true);
   brakeDrive();
   wait(1000, msec);
   brakeIntakes();
@@ -333,12 +323,12 @@ void skillsAuton() {
   wait(100, msec);
   pidTurn(47, 1.5, 0, 5, true);
   wait(200, msec);
-  encoderDrive(-0.8, 60, true);
-  wait(100, msec);
+  encoderDrive(-1, 60, false);
+  wait(1000, msec);
 
   //intake second row of cubes
   spinIntakes(true, 100);
-  encoderDrive(4.55, 36, true);
+  encoderDrive(4.8, 36, true);
   brakeDrive();
   wait(1500, msec);
   brakeIntakes();
@@ -350,7 +340,7 @@ void skillsAuton() {
   wait(200, msec);
 
   //stack in goalzone
-  encoderDrive(1.4, 60, true);
+  encoderDrive(1.56, 60, true);
   spinIntakes(false, 40);
   wait(350, msec);
   brakeIntakes();
