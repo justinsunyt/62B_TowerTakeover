@@ -13,4 +13,9 @@ extern pros::Motor driveRightFront;
 //CONTROLLER
 extern pros::Controller controller;
 
-int auton;
+//VARIABLES
+extern int macroRun;
+#define TRAYVERTICAL 8700
+#define TRAYLOW 4000
+#define ARMLOW 2300
+#define ARMHIGH 3000

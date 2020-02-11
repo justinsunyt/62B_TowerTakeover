@@ -1,6 +1,6 @@
 #include "main.h"
 
-bool isMacro = false;
+int isMacro = 0;
 
 
 //HELPER FUNCTIONS
@@ -21,20 +21,38 @@ void setTray(int power) {
 //MACROS
 void stack() {
   setIntake(-10);
-  tray.move_absolute(17100, 127);
+  tray.move_absolute(TRAYVERTICAL, 127);
+  while (tray.get_position() < TRAYVERTICAL && macroRun == 1) {
+    pros::delay(2);
+  }
   setIntake(0);
 }
 
 void towerLow() {
-  tray.move_absolute(6300, 127);
+  tray.move_absolute(TRAYLOW, 127);
   pros::delay(400);
-  arm.move_absolute(4860, 127);
+  arm.move_absolute(ARMLOW, 127);
+  while (arm.get_position() < ARMLOW && macroRun == 1) {
+    pros::delay(2);
+  }
 }
 
 void towerHigh() {
-  tray.move_absolute(7020, 127);
+  tray.move_absolute(TRAYLOW, 127);
   pros::delay(400);
-  arm.move_absolute(6480, 127);
+  arm.move_absolute(ARMHIGH, 127);
+  while (arm.get_position() < ARMHIGH && macroRun == 1) {
+    pros::delay(2);
+  }
+}
+
+void resetArmTray() {
+  arm.move_absolute(0, -127);
+  pros::delay(400);
+  tray.move_absolute(0, -127);
+  while (tray.get_position() > 0 && macroRun == 1) {
+    pros::delay(2);
+  }
 }
 
 
@@ -58,7 +76,7 @@ void setTrayMotor() {
 }
 
 void setArmTrayIntakeMotors(void* param) {
-  while (1) {
+  while(true) {
     if (isMacro == 0) {
       setArmMotor();
       setIntakeMotors();
@@ -80,6 +98,17 @@ void setArmTrayIntakeMotors(void* param) {
         isMacro = 1;
         towerHigh();
         isMacro = 0;
+      }
+      if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
+        isMacro = 1;
+        resetArmTray();
+        isMacro = 0;
+      }
+      if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
+        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
+          tray.tare_position();
+          arm.tare_position();
+        }
       }
     }
   }

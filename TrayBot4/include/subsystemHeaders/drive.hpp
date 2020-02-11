@@ -4,4 +4,4 @@
 void setDrive(int left, int right);
 
 //DRIVE CONTROL FUNCTIONS
-void setDriveMotors();
+void setDriveMotors(void* param);

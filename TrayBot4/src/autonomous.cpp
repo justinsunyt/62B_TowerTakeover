@@ -37,22 +37,22 @@ void BUP() {
 }
 
 void autonomous() {
-  if (auton == 0) {
-    oneP();
-  }
-  else if (auton == 1) {
-    skills();
-  }
-  else if (auton == 2) {
-    RP();
-  }
-  else if (auton == 3) {
-    BP();
-  }
-  else if (auton == 4) {
-    RUP();
-  }
-  else if (auton == 5) {
-    BUP();
-  }
+  // if (auton == 0) {
+  //   oneP();
+  // }
+  // else if (auton == 1) {
+  //   skills();
+  // }
+  // else if (auton == 2) {
+  //   RP();
+  // }
+  // else if (auton == 3) {
+  //   BP();
+  // }
+  // else if (auton == 4) {
+  //   RUP();
+  // }
+  // else if (auton == 5) {
+  //   BUP();
+  // }
 }
