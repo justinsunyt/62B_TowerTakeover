@@ -24,6 +24,7 @@ void opcontrol() {
       macroRun = 0;
       pros::delay(10);
       macroRun = 1;
+      isMacro = 0;
     }
   }
 }

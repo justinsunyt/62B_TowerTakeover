@@ -2,13 +2,15 @@
 
 //HELPER FUNCTIONS
 void setArm(int power);
-void setIntake(int left, int right);
+void setIntake(int power);
 void setTray(int power);
 
 //MACROS
 void stack();
 void towerLow();
 void towerHigh();
+void resetArmTray();
+void deploy();
 
 //DRIVER CONTROL FUNCTIONS
 void setArmMotor();

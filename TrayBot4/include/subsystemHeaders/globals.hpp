@@ -15,7 +15,12 @@ extern pros::Controller controller;
 
 //VARIABLES
 extern int macroRun;
+extern int isMacro;
+extern int auton;
+
 #define TRAYVERTICAL 8700
 #define TRAYLOW 4000
 #define ARMLOW 2300
 #define ARMHIGH 3000
+#define MOVEVELOCITY 150
+#define TURNVELOCITY 120

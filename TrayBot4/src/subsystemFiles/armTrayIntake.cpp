@@ -1,7 +1,5 @@
 #include "main.h"
 
-int isMacro = 0;
-
 
 //HELPER FUNCTIONS
 void setArm(int power) {
@@ -55,6 +53,16 @@ void resetArmTray() {
   }
 }
 
+void deploy() {
+  setIntake(-127);
+  setArm(127);
+  pros::delay(250);
+  setArm(-127);
+  pros::delay(250);
+  setIntake(0);
+  setArm(0);
+}
+
 
 //DRIVER CONTROL FUNCTIONS
 void setArmMotor() {
@@ -99,16 +107,17 @@ void setArmTrayIntakeMotors(void* param) {
         towerHigh();
         isMacro = 0;
       }
+      //A to reset
       if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_A)) {
         isMacro = 1;
         resetArmTray();
         isMacro = 0;
       }
+      //Y to deploy
       if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_Y)) {
-        if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_RIGHT)) {
-          tray.tare_position();
-          arm.tare_position();
-        }
+        isMacro = 1;
+        deploy();
+        isMacro = 0;
       }
     }
   }

@@ -14,3 +14,5 @@ pros::Motor driveRightFront(9, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENC
 pros::Controller controller(pros::E_CONTROLLER_MASTER);
 
 int macroRun = 1;
+int isMacro = 0;
+int auton = 0;

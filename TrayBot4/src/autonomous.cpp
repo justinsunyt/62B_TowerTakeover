@@ -12,47 +12,123 @@
  * from where it left off.
  */
 
-void oneP() {
+std::shared_ptr<ChassisController> chassis = ChassisControllerBuilder()
+  .withMotors({1, 2}, {10, 9})
+  .withDimensions(AbstractMotor::gearset::green, {{2.75_in, 11.2_in}, imev5GreenTPR})
+  .withMaxVelocity(MOVEVELOCITY)
+  .build();
 
+
+void oneP() {
+  chassis->moveDistance(1_ft);
+  chassis->moveDistance(-1_ft);
 }
 
 void skills() {
-
+  chassis->stop();
+  chassis->waitUntilSettled();
+  chassis->moveDistanceAsync(0.8_ft);
+  pros::delay(1000);
+  deploy();
+  chassis->waitUntilSettled();
+  chassis->moveDistanceAsync(-0.5_ft);
+  pros::delay(400);
 }
 
 void RP() {
-
+  chassis->stop();
+  chassis->waitUntilSettled();
+  chassis->moveDistanceAsync(0.8_ft);
+  pros::delay(1000);
+  deploy();
+  chassis->waitUntilSettled();
+  chassis->moveDistanceAsync(-0.5_ft);
+  pros::delay(400);
 }
 
 void BP() {
-
+  chassis->stop();
+  chassis->waitUntilSettled();
+  chassis->moveDistanceAsync(0.8_ft);
+  pros::delay(1000);
+  deploy();
+  chassis->waitUntilSettled();
+  chassis->moveDistanceAsync(-0.5_ft);
+  pros::delay(400);
 }
 
 void RUP() {
+  chassis->stop();
+  chassis->waitUntilSettled();
+  chassis->moveDistanceAsync(0.8_ft);
+  pros::delay(1000);
+  deploy();
+  chassis->waitUntilSettled();
+  chassis->moveDistanceAsync(-0.5_ft);
+  pros::delay(400);
+
+  setIntake(127);
+  chassis->moveDistance(2_ft);
+  pros::delay(200);
+  setIntake(0);
+  chassis->moveDistance(-1_ft);
+
+  chassis->setMaxVelocity(TURNVELOCITY);
+  chassis->turnAngle(-50_deg);
+  chassis->setMaxVelocity(MOVEVELOCITY);
+  chassis->moveDistance(-1.8_ft);
+  chassis->setMaxVelocity(TURNVELOCITY);
+  chassis->turnAngle(50_deg);
+
+  chassis->setMaxVelocity(MOVEVELOCITY);
+  setIntake(127);
+  chassis->moveDistance(3_ft);
+  pros::delay(200);
+  setIntake(0);
+  chassis->moveDistance(-1_ft);
+
+  chassis->setMaxVelocity(TURNVELOCITY);
+  chassis->turnAngle(135_deg);
+
+  chassis->moveDistance(1.5_ft);
+  setIntake(-50);
+  pros::delay(300);
+  setIntake(0);
+  stack();
+  pros::delay(300);
+  chassis->moveDistance(-1_ft);
 
 }
 
 void BUP() {
-
+  chassis->stop();
+  chassis->waitUntilSettled();
+  chassis->moveDistanceAsync(0.8_ft);
+  pros::delay(1000);
+  deploy();
+  chassis->waitUntilSettled();
+  chassis->moveDistanceAsync(-0.5_ft);
+  pros::delay(400);
 }
 
 void autonomous() {
-  // if (auton == 0) {
-  //   oneP();
-  // }
-  // else if (auton == 1) {
-  //   skills();
-  // }
-  // else if (auton == 2) {
-  //   RP();
-  // }
-  // else if (auton == 3) {
-  //   BP();
-  // }
-  // else if (auton == 4) {
-  //   RUP();
-  // }
-  // else if (auton == 5) {
-  //   BUP();
-  // }
+  if (auton == 0) {
+    // oneP();
+    RUP();
+  }
+  else if (auton == 1) {
+    skills();
+  }
+  else if (auton == 2) {
+    RP();
+  }
+  else if (auton == 3) {
+    BP();
+  }
+  else if (auton == 4) {
+    RUP();
+  }
+  else if (auton == 5) {
+    BUP();
+  }
 }
