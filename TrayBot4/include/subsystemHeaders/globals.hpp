@@ -10,6 +10,10 @@ extern pros::Motor driveLeftFront;
 extern pros::Motor driveRightBack;
 extern pros::Motor driveRightFront;
 
+//SENSORS
+extern pros::ADIDigitalIn trayLimit;
+extern pros::ADIDigitalIn armLimit;
+
 //CONTROLLER
 extern pros::Controller controller;
 
@@ -18,9 +22,17 @@ extern int macroRun;
 extern int isMacro;
 extern int auton;
 
-#define TRAYVERTICAL 8700
-#define TRAYLOW 4000
+//POSITIONS
+#define TRAYVERTICAL 4200
 #define ARMLOW 2300
 #define ARMHIGH 3000
-#define MOVEVELOCITY 150
-#define TURNVELOCITY 120
+
+//OP CONTROL CONSTANTS
+#define ARMPOWER 127
+#define INTAKEPOWER 127
+#define TRAYPOWER 90
+#define OUTTAKERATIO 0.7
+
+//AUTON CONSTANTS
+#define MOVEVELOCITY 130
+#define TURNVELOCITY 100

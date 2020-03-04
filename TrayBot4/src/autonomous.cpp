@@ -13,8 +13,13 @@
  */
 
 std::shared_ptr<ChassisController> chassis = ChassisControllerBuilder()
-  .withMotors({1, 2}, {10, 9})
-  .withDimensions(AbstractMotor::gearset::green, {{2.75_in, 11.2_in}, imev5GreenTPR})
+  .withMotors({1, 2}, {4, 3})
+  .withDimensions(AbstractMotor::gearset::green, {{4_in, 11.2_in}, imev5GreenTPR})
+  .withGains(
+        {0.0066, 0.0000008, 0.000233}, // Distance controller gains
+        {0.001, 0, 0.0001}, // Turn controller gains
+        {0, 0, 0}  // Angle controller gains
+    )
   .withMaxVelocity(MOVEVELOCITY)
   .build();
 
@@ -64,8 +69,6 @@ void RUP() {
   pros::delay(1000);
   deploy();
   chassis->waitUntilSettled();
-  chassis->moveDistanceAsync(-0.5_ft);
-  pros::delay(400);
 
   setIntake(127);
   chassis->moveDistance(2_ft);
@@ -90,12 +93,10 @@ void RUP() {
   chassis->setMaxVelocity(TURNVELOCITY);
   chassis->turnAngle(135_deg);
 
+  chassis->setMaxVelocity(MOVEVELOCITY);
   chassis->moveDistance(1.5_ft);
-  setIntake(-50);
-  pros::delay(300);
-  setIntake(0);
   stack();
-  pros::delay(300);
+  pros::delay(400);
   chassis->moveDistance(-1_ft);
 
 }
@@ -113,8 +114,8 @@ void BUP() {
 
 void autonomous() {
   if (auton == 0) {
-    // oneP();
-    RUP();
+    oneP();
+    //RUP();
   }
   else if (auton == 1) {
     skills();

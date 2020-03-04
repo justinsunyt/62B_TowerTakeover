@@ -19,6 +19,19 @@ void opcontrol() {
   pros::Task armTrayIntakeTask (armTrayIntake);
   pros::task_t drive = pros::c::task_create(setDriveMotors, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "drive");
   pros::Task driveTask (setDriveMotors);
+
+  driveLeftBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	driveLeftFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	driveRightBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	driveRightFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	tray.set_brake_mode(pros::E_MOTOR_BRAKE_BRAKE);
+	arm.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	intakeLeft.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	intakeRight.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+
+	tray.tare_position();
+	arm.tare_position();
+
   while(true) {
     if (controller.get_digital(pros::E_CONTROLLER_DIGITAL_B)) {
       macroRun = 0;
