@@ -1,4 +1,5 @@
 #include "main.h"
+#include "okapi/impl/util/configurableTimeUtilFactory.hpp"
 
 /**
  * Runs the user autonomous code. This function will be started in its own task
@@ -12,17 +13,26 @@
  * from where it left off.
  */
 
+ConfigurableTimeUtilFactory *pTimeUtilFactory = new ConfigurableTimeUtilFactory(500, 100, 20_ms);
+TimeUtilFactory factory = (TimeUtilFactory) *pTimeUtilFactory;
 std::shared_ptr<ChassisController> chassis = ChassisControllerBuilder()
   .withMotors({1, 2}, {4, 3})
-  .withDimensions(AbstractMotor::gearset::green, {{4_in, 11.2_in}, imev5GreenTPR})
+  .withDimensions(AbstractMotor::gearset::green, {{4_in, 11.8_in}, imev5GreenTPR})
+  .withChassisControllerTimeUtilFactory(factory)
   .withGains(
-        {0.0066, 0.0000008, 0.000233}, // Distance controller gains
-        {0.001, 0, 0.0001}, // Turn controller gains
-        {0, 0, 0}  // Angle controller gains
+        {0.0062, 0.0000008, 0.00023}, // Distance controller gains
+        {0.0045, 0, 0.0001}, // Turn controller gains
+        {0.0015, 0, 0}  // Angle controller gains
     )
-  .withMaxVelocity(MOVEVELOCITY)
+  .withMaxVelocity(MOVE)
   .build();
 
+
+void testAuton() {
+  chassis->moveDistance(3_ft);
+  chassis->turnAngle(360_deg);
+  chassis->moveDistance(-3_ft);
+}
 
 void oneP() {
   chassis->moveDistance(1_ft);
@@ -55,7 +65,7 @@ void BP() {
   chassis->stop();
   chassis->waitUntilSettled();
   chassis->moveDistanceAsync(0.8_ft);
-  pros::delay(1000);
+  pros::delay(800);
   deploy();
   chassis->waitUntilSettled();
   chassis->moveDistanceAsync(-0.5_ft);
@@ -65,38 +75,51 @@ void BP() {
 void RUP() {
   chassis->stop();
   chassis->waitUntilSettled();
-  chassis->moveDistanceAsync(0.8_ft);
-  pros::delay(1000);
+  chassis->setMaxVelocity(SLOWMOVE);
+  chassis->moveDistanceAsync(2.7_ft);
+  pros::delay(250);
   deploy();
+  chassis->setMaxVelocity(INTAKEMOVE);
+  setArm(-5);
+  setIntake(127);
   chassis->waitUntilSettled();
-
-  setIntake(127);
-  chassis->moveDistance(2_ft);
   pros::delay(200);
+  resetArmTray();
   setIntake(0);
+  setArm(0);
+  chassis->setMaxVelocity(MOVE);
   chassis->moveDistance(-1_ft);
 
-  chassis->setMaxVelocity(TURNVELOCITY);
-  chassis->turnAngle(-50_deg);
-  chassis->setMaxVelocity(MOVEVELOCITY);
-  chassis->moveDistance(-1.8_ft);
-  chassis->setMaxVelocity(TURNVELOCITY);
-  chassis->turnAngle(50_deg);
+  chassis->setMaxVelocity(TURN);
+  chassis->turnAngle(-60_deg);
+  chassis->setMaxVelocity(MOVE);
+  chassis->moveDistance(-2.1_ft);
+  chassis->setMaxVelocity(TURN);
+  chassis->turnAngle(60_deg);
 
-  chassis->setMaxVelocity(MOVEVELOCITY);
+  chassis->setMaxVelocity(INTAKEMOVE);
   setIntake(127);
-  chassis->moveDistance(3_ft);
+  setArm(-5);
+  chassis->moveDistance(3.3_ft);
   pros::delay(200);
+  resetArmTray();
   setIntake(0);
-  chassis->moveDistance(-1_ft);
+  setArm(0);
+  chassis->setMaxVelocity(MOVE);
+  chassis->moveDistance(-2.3_ft);
+  setIntake(-80);
+  pros::delay(350);
+  setIntake(0);
 
-  chassis->setMaxVelocity(TURNVELOCITY);
+  chassis->setMaxVelocity(TURN);
   chassis->turnAngle(135_deg);
 
-  chassis->setMaxVelocity(MOVEVELOCITY);
-  chassis->moveDistance(1.5_ft);
-  stack();
+  chassis->setMaxVelocity(MOVE);
+  chassis->moveDistance(1.7_ft);
+  fastStack();
+  setTray(0);
   pros::delay(400);
+  chassis->setMaxVelocity(SLOWMOVE);
   chassis->moveDistance(-1_ft);
 
 }
@@ -113,9 +136,17 @@ void BUP() {
 }
 
 void autonomous() {
+  arm.tare_position();
+  tray.tare_position();
+  arm.set_brake_mode(MOTOR_BRAKE_HOLD);
+  tray.set_brake_mode(MOTOR_BRAKE_HOLD);
+  intakeLeft.set_brake_mode(MOTOR_BRAKE_HOLD);
+  intakeRight.set_brake_mode(MOTOR_BRAKE_HOLD);
+
   if (auton == 0) {
-    oneP();
-    //RUP();
+    //testAuton();
+    //oneP();
+    RUP();
   }
   else if (auton == 1) {
     skills();

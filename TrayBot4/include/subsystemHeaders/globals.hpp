@@ -23,16 +23,20 @@ extern int isMacro;
 extern int auton;
 
 //POSITIONS
+#define TRAYLOW 2000
 #define TRAYVERTICAL 4200
-#define ARMLOW 2300
-#define ARMHIGH 3000
+#define ARMLOW 1960
+#define ARMHIGH 2800
 
 //OP CONTROL CONSTANTS
 #define ARMPOWER 127
 #define INTAKEPOWER 127
 #define TRAYPOWER 90
-#define OUTTAKERATIO 0.7
+#define HIGHINTAKE 105
+#define LOWINTAKE 80
 
 //AUTON CONSTANTS
-#define MOVEVELOCITY 130
-#define TURNVELOCITY 100
+#define SLOWMOVE 30
+#define MOVE 130
+#define INTAKEMOVE 80
+#define TURN 90

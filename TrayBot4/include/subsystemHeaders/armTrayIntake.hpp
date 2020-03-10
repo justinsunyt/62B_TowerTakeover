@@ -7,6 +7,7 @@ void setTray(int power);
 
 //MACROS
 void stack();
+void fastStack();
 void towerLow();
 void towerHigh();
 void resetArmTray();

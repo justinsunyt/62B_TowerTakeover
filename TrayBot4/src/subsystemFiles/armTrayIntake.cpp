@@ -20,6 +20,15 @@ void setTray(int power) {
 void stack() {
   double trayPower = 127;
   double exp = 0;
+  setIntake(30);
+  while (tray.get_position() < TRAYLOW && macroRun == 1) {
+    tray = trayPower;
+    pros::delay(10);
+    if (trayPower > 60) {
+      exp += 0.012;
+      trayPower = trayPower - exp * exp * exp;
+    }
+  }
   setIntake(0);
   while (tray.get_position() < TRAYVERTICAL && macroRun == 1) {
     tray = trayPower;
@@ -29,25 +38,63 @@ void stack() {
       trayPower = trayPower - exp * exp * exp;
     }
   }
+  setIntake(0);
+}
+
+void fastStack() {
+  double trayPower = 127;
+  double exp = 0;
+  setIntake(30);
+  while (tray.get_position() < TRAYLOW && macroRun == 1) {
+    tray = trayPower;
+    pros::delay(10);
+    if (trayPower > 70) {
+      exp += 0.011;
+      trayPower = trayPower - exp * exp * exp;
+    }
+  }
+  setIntake(0);
+  while (tray.get_position() < TRAYVERTICAL && macroRun == 1) {
+    tray = trayPower;
+    pros::delay(10);
+    if (trayPower > 70) {
+      exp += 0.011;
+      trayPower = trayPower - exp * exp * exp;
+    }
+  }
+  setIntake(0);
 }
 
 void towerLow() {
-  setIntake(-80);
-  pros::delay(200);
-  arm.move_absolute(ARMLOW, 127);
-  pros::delay(150);
-  setIntake(0);
-  while (arm.get_position() < ARMLOW && macroRun == 1) {
-    pros::delay(2);
+  if (arm.get_position() < ARMLOW) {
+    setIntake(-80);
+    pros::delay(250);
+    arm.move_absolute(ARMLOW, 127);
+    pros::delay(220);
+    setIntake(0);
+    while (arm.get_position() < ARMLOW && macroRun == 1) {
+      pros::delay(2);
+    }
+  } else {
+    setIntake(0);
+    arm.move_absolute(ARMLOW, -80);
+    while (arm.get_position() > ARMLOW && macroRun == 1) {
+      pros::delay(2);
+    }
   }
 }
 
 void towerHigh() {
-  setIntake(-80);
-  pros::delay(200);
-  arm.move_absolute(ARMHIGH, 127);
-  pros::delay(150);
-  setIntake(0);
+  if (arm.get_position() < ARMLOW - 200) {
+    setIntake(-80);
+    pros::delay(250);
+    arm.move_absolute(ARMHIGH, 127);
+    pros::delay(220);
+    setIntake(0);
+  } else {
+    setIntake(0);
+    arm.move_absolute(ARMHIGH, 127);
+  }
   while (arm.get_position() < ARMHIGH && macroRun == 1) {
     pros::delay(2);
   }
@@ -84,7 +131,7 @@ void deploy() {
   setIntake(-127);
   pros::delay(200);
   setArm(127);
-  pros::delay(200);
+  pros::delay(800);
   resetArmTray();
   setIntake(0);
 }
@@ -95,7 +142,7 @@ void setArmMotor() {
   int armPower;
   //UP moves arm up, DOWN moves arm down
   if (armLimit.get_value()) {
-    armPower = ARMPOWER * (controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP));
+    armPower = ARMPOWER * (controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP)) - 5;
   } else {
     armPower = ARMPOWER * (controller.get_digital(pros::E_CONTROLLER_DIGITAL_UP) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_DOWN));
   }
@@ -104,7 +151,16 @@ void setArmMotor() {
 
 void setIntakeMotors() {
   //R1 intakes, R2 outtakes
-  int intakePower = INTAKEPOWER * (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) - OUTTAKERATIO * controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2));
+  int intakePower;
+  if (arm.get_position() > ARMLOW - 100 && arm.get_position() < ARMLOW + 100) {
+    intakePower = LOWINTAKE * (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2));
+  }
+  else if (arm.get_position() > ARMHIGH - 100 && arm.get_position() < ARMHIGH + 100) {
+    intakePower = HIGHINTAKE * (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2));
+  }
+  else {
+    intakePower = INTAKEPOWER * (controller.get_digital(pros::E_CONTROLLER_DIGITAL_R1) - controller.get_digital(pros::E_CONTROLLER_DIGITAL_R2));
+  }
   setIntake(intakePower);
 }
 
