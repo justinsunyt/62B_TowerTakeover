@@ -13,12 +13,12 @@
  * from where it left off.
  */
 
-ConfigurableTimeUtilFactory *pTimeUtilFactory = new ConfigurableTimeUtilFactory(500, 100, 20_ms);
-TimeUtilFactory factory = (TimeUtilFactory) *pTimeUtilFactory;
+ConfigurableTimeUtilFactory timeUtilFactory = ConfigurableTimeUtilFactory(500, 100, 20_ms);
+// TimeUtilFactory factory = (TimeUtilFactory) timeUtilFactory;
 std::shared_ptr<ChassisController> chassis = ChassisControllerBuilder()
   .withMotors({1, 2}, {4, 3})
   .withDimensions(AbstractMotor::gearset::green, {{4_in, 11.8_in}, imev5GreenTPR})
-  .withChassisControllerTimeUtilFactory(factory)
+  .withChassisControllerTimeUtilFactory(timeUtilFactory)
   .withGains(
         {0.0062, 0.0000008, 0.00023}, // Distance controller gains
         {0.0045, 0, 0.0001}, // Turn controller gains
@@ -27,10 +27,71 @@ std::shared_ptr<ChassisController> chassis = ChassisControllerBuilder()
   .withMaxVelocity(MOVE)
   .build();
 
+//FUNCTIONS
+void imuTurn(double degrees, double kP, double kI, double kD, bool dir, double speedPCT = 100) {
+  double rotation;
+  double error;
+  double integral;
+  double derivative;
+  double speed;
+  double prevError;
+  double done = 0;
 
+  rotation = inertial.get_rotation();
+
+  if (dir) {
+    while(done < 1) {
+      error = degrees - (inertial.get_rotation() - rotation);
+      integral = integral + error;
+      if (error == 0 or error > degrees) {
+        integral = 0;
+      }
+      if (error > 360) {
+        integral = 0;
+      }
+      derivative = error - prevError;
+      prevError = error;
+      speed = speedPCT/100 * error*kP + integral*kI + derivative*kD;
+
+      setDrive(speed, -speed);
+
+      pros::delay(10);
+
+      if (error < 0.8 && error > -0.8) {
+        done += 0.1;
+      }
+    }
+  } else {
+    while(done < 1) {
+      error = degrees + (inertial.get_rotation() - rotation);
+      integral = integral + error;
+      if (error == 0 or error > degrees) {
+        integral = 0;
+      }
+      if (error > 360) {
+        integral = 0;
+      }
+      derivative = error - prevError;
+      prevError = error;
+      speed = speedPCT/100 * error*kP + integral*kI + derivative*kD;
+
+      setDrive(-speed, speed);
+
+      pros::delay(10);
+
+      if (error < 0.8 && error > -0.8) {
+        done += 0.1;
+      }
+    }
+  }
+}
+
+
+//AUTONS
 void testAuton() {
   chassis->moveDistance(3_ft);
-  chassis->turnAngle(360_deg);
+  imuTurn(180, 1.5, 0, 5, true, TURN);
+  imuTurn(180, 1.5, 0, 5, false, TURN);
   chassis->moveDistance(-3_ft);
 }
 
@@ -40,88 +101,67 @@ void oneP() {
 }
 
 void skills() {
-  chassis->stop();
-  chassis->waitUntilSettled();
-  chassis->moveDistanceAsync(0.8_ft);
-  pros::delay(1000);
-  deploy();
-  chassis->waitUntilSettled();
-  chassis->moveDistanceAsync(-0.5_ft);
-  pros::delay(400);
+
 }
 
 void RP() {
-  chassis->stop();
-  chassis->waitUntilSettled();
-  chassis->moveDistanceAsync(0.8_ft);
-  pros::delay(1000);
-  deploy();
-  chassis->waitUntilSettled();
-  chassis->moveDistanceAsync(-0.5_ft);
-  pros::delay(400);
+
 }
 
 void BP() {
-  chassis->stop();
-  chassis->waitUntilSettled();
-  chassis->moveDistanceAsync(0.8_ft);
-  pros::delay(800);
-  deploy();
-  chassis->waitUntilSettled();
-  chassis->moveDistanceAsync(-0.5_ft);
-  pros::delay(400);
+
 }
 
 void RUP() {
   chassis->stop();
   chassis->waitUntilSettled();
   chassis->setMaxVelocity(SLOWMOVE);
-  chassis->moveDistanceAsync(2.7_ft);
-  pros::delay(250);
+  chassis->moveDistanceAsync(0.5_ft);
+  pros::delay(300);
+  holdDrive();
   deploy();
+
+  coastDrive();
   chassis->setMaxVelocity(INTAKEMOVE);
   setArm(-5);
   setIntake(127);
-  chassis->waitUntilSettled();
+  chassis->moveDistance(2.5_ft);
   pros::delay(200);
-  resetArmTray();
-  setIntake(0);
   setArm(0);
-  chassis->setMaxVelocity(MOVE);
-  chassis->moveDistance(-1_ft);
 
-  chassis->setMaxVelocity(TURN);
-  chassis->turnAngle(-60_deg);
+  imuTurn(35, 1.5, 0, 5, false, TURN);
   chassis->setMaxVelocity(MOVE);
-  chassis->moveDistance(-2.1_ft);
-  chassis->setMaxVelocity(TURN);
-  chassis->turnAngle(60_deg);
+  chassis->moveDistance(-2_ft);
+  imuTurn(35, 1.5, 0, 5, true, TURN);
 
   chassis->setMaxVelocity(INTAKEMOVE);
-  setIntake(127);
   setArm(-5);
-  chassis->moveDistance(3.3_ft);
+  setIntake(127);
+  chassis->moveDistance(3.5_ft);
   pros::delay(200);
-  resetArmTray();
   setIntake(0);
   setArm(0);
+
   chassis->setMaxVelocity(MOVE);
-  chassis->moveDistance(-2.3_ft);
-  setIntake(-80);
-  pros::delay(350);
+  chassis->moveDistance(-2.5_ft);
+  setIntake(-60);
+  pros::delay(300);
   setIntake(0);
 
-  chassis->setMaxVelocity(TURN);
-  chassis->turnAngle(135_deg);
+  imuTurn(135, 1.5, 0, 5, true, TURN);
 
   chassis->setMaxVelocity(MOVE);
-  chassis->moveDistance(1.7_ft);
+  chassis->moveDistanceAsync(1.7_ft);
+  pros::delay(800);
   fastStack();
   setTray(0);
-  pros::delay(400);
   chassis->setMaxVelocity(SLOWMOVE);
-  chassis->moveDistance(-1_ft);
+  chassis->moveDistance(0.1_ft);
 
+  chassis->setMaxVelocity(MOVE);
+  chassis->moveDistanceAsync(-1_ft);
+  pros::delay(500);
+  resetArmTray();
 }
 
 void BUP() {

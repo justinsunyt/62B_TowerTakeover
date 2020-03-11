@@ -13,6 +13,7 @@ extern pros::Motor driveRightFront;
 //SENSORS
 extern pros::ADIDigitalIn trayLimit;
 extern pros::ADIDigitalIn armLimit;
+extern pros::Imu inertial;
 
 //CONTROLLER
 extern pros::Controller controller;
@@ -37,6 +38,6 @@ extern int auton;
 
 //AUTON CONSTANTS
 #define SLOWMOVE 30
-#define MOVE 130
-#define INTAKEMOVE 80
-#define TURN 90
+#define MOVE 110
+#define INTAKEMOVE 85
+#define TURN 80

@@ -13,6 +13,7 @@ pros::Motor driveRightFront(4, pros::E_MOTOR_GEARSET_18, true, pros::E_MOTOR_ENC
 //SENSORS
 pros::ADIDigitalIn trayLimit('A');
 pros::ADIDigitalIn armLimit('B');
+pros::Imu inertial(10);
 
 //CONTROLLER_MASTER
 pros::Controller controller(pros::E_CONTROLLER_MASTER);

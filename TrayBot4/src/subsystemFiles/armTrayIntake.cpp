@@ -131,7 +131,7 @@ void deploy() {
   setIntake(-127);
   pros::delay(200);
   setArm(127);
-  pros::delay(800);
+  pros::delay(600);
   resetArmTray();
   setIntake(0);
 }

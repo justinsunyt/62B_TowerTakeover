@@ -8,6 +8,20 @@ void setDrive(int left, int right) {
   driveRightFront = right;
 }
 
+void coastDrive() {
+  driveLeftBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	driveLeftFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	driveRightBack.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+	driveRightFront.set_brake_mode(pros::E_MOTOR_BRAKE_COAST);
+}
+
+void holdDrive() {
+  driveLeftBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	driveLeftFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	driveRightBack.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+	driveRightFront.set_brake_mode(pros::E_MOTOR_BRAKE_HOLD);
+}
+
 //DRIVER CONTROL FUNCTIONS
 void setDriveMotors(void* param) {
   while(true) {
@@ -20,5 +34,5 @@ void setDriveMotors(void* param) {
       rightJoystick = 0;
 
     setDrive(leftJoystick, rightJoystick);
-  }  
+  }
 }
